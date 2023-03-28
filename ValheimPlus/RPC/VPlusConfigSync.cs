@@ -88,7 +88,7 @@ namespace ValheimPlus.RPC
                     }
                     catch (Exception)
                     {
-                        //ignore
+                        throw;
                     }
                     finally
                     {

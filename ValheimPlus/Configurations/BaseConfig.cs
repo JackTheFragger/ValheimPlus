@@ -82,7 +82,7 @@ namespace ValheimPlus.Configurations
                     continue;
                 }
                 var currentValue = property.GetValue(thisConfiguration);
-                if (IgnoreKeyCode(property))
+                if (LoadLocalOnly(property))
                 {
                     property.SetValue(this, currentValue, null);
                     continue;
@@ -144,12 +144,14 @@ namespace ValheimPlus.Configurations
             var loadingOption = property.GetCustomAttribute<LoadingOption>();
             var loadingMode = loadingOption?.LoadingMode ?? LoadingMode.Always;
 
-            return (VPlusConfigSync.SyncRemote && loadingMode == LoadingMode.LocalOnly
-                || loadingMode == LoadingMode.Never);
+            return (loadingMode == LoadingMode.Never);
         }
-        private bool IgnoreKeyCode(PropertyInfo property)
+        private bool LoadLocalOnly(PropertyInfo property)
         {
-            return property.PropertyType == typeof(KeyCode) && VPlusConfigSync.SyncRemote && !ConfigurationExtra.SyncHotkeys;
+            var loadingOption = property.GetCustomAttribute<LoadingOption>();
+            var loadingMode = loadingOption?.LoadingMode ?? LoadingMode.Always;
+
+            return VPlusConfigSync.SyncRemote && (property.PropertyType == typeof(KeyCode) && !ConfigurationExtra.SyncHotkeys || loadingMode == LoadingMode.LocalOnly);
         }
 
         private static object GetCurrentConfiguration(string section)
