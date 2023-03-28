@@ -58,7 +58,7 @@ namespace ValheimPlus.Configurations
         {
             {typeof(float), GetFloatValue },
             {typeof(int), GetIntValue },
-            {typeof(KeyCode), GetKeyCodeValue},
+            {typeof(KeyCode), GetKeyCodeValue },
             {typeof(bool), GetBoolValue }
         };
 
